@@ -1,0 +1,13 @@
+.git
+node_modules
+vendor
+.env
+.env.testing
+storage/logs/*
+storage/framework/*
+storage/app/*
+cookies.txt
+Dockerfile*
+docker-compose.override.yml
+*.md
+tests/Report/*

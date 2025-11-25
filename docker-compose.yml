@@ -1,0 +1,65 @@
+version: '3.8'
+
+services:
+  # MySQL Database
+  db:
+    image: mysql:8.0
+    container_name: news_scrapper_db
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: news_scrapper
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_USER: news
+      MYSQL_PASSWORD: news_password
+    volumes:
+      - db_data:/var/lib/mysql
+    ports:
+      - "3306:3306"
+    networks:
+      - news_network
+    command: [
+      "--skip-host-cache",
+      "--skip-name-resolve",
+      "--skip-log-bin",
+      "--innodb_flush_method=fsync"
+    ]
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -uroot -p$MYSQL_ROOT_PASSWORD -h localhost || exit 1"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+  # Redis for queues and caching
+  redis:
+    image: redis:7-alpine
+    container_name: news_scrapper_redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    networks:
+      - news_network
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: news_scrapper_app
+    restart: unless-stopped
+    ports:
+      - "8000:80"
+    volumes:
+      - ./:/var/www/html
+    env_file:
+      - ./.env
+    depends_on:
+      - db
+      - redis
+    networks:
+      - news_network
+
+volumes:
+  db_data:
+
+networks:
+  news_network:
+    driver: bridge

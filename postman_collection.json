@@ -1,0 +1,366 @@
+{
+	"info": {
+		"_postman_id": "7cfdb652-d48f-408e-b790-5a8bcb943ba0",
+		"name": "News Aggregator API",
+		"description": "Postman collection for News Aggregator backend APIs with sample payloads",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "19468282",
+		"_collection_link": "https://winter-rocket-321698.postman.co/workspace/Personal-Workspace~e263e835-3272-43bf-9234-f809bf828045/collection/19468282-7cfdb652-d48f-408e-b790-5a8bcb943ba0?action=share&source=collection_link&creator=19468282"
+	},
+	"item": [
+		{
+			"name": "Register",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"let token = '';",
+							"try {",
+							"  const res = pm.response.json();",
+							"  token = res && res.data && res.data.token ? res.data.token : '';",
+							"} catch (e) { token = ''; }",
+							"if (token) {",
+							"  pm.collectionVariables.set('token', token);",
+							"  pm.test('Token captured from register', function () { pm.expect(token).to.be.a('string').and.not.empty; });",
+							"} else {",
+							"  pm.test('Register response contains token', function () { pm.expect.fail('No token in response'); });",
+							"}"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"name\": \"Jane Doe\",\n  \"email\": \"jane@example.com\",\n  \"password\": \"Password123!\",\n  \"password_confirmation\": \"Password123!\"\n}"
+				},
+				"url": {
+					"raw": "{{baseUrl}}/register",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"let token = '';",
+							"try {",
+							"  const res = pm.response.json();",
+							"  token = res && res.data && res.data.token ? res.data.token : '';",
+							"} catch (e) { token = ''; }",
+							"if (token) {",
+							"  pm.collectionVariables.set('token', token);",
+							"  pm.test('Token captured from login', function () { pm.expect(token).to.be.a('string').and.not.empty; });",
+							"} else {",
+							"  pm.test('Login response contains token', function () { pm.expect.fail('No token in response'); });",
+							"}"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"email\": \"jane@example.com\",\n  \"password\": \"Password123!\"\n}"
+				},
+				"url": {
+					"raw": "{{baseUrl}}/login",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get User",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{token}}"
+					}
+				],
+				"url": {
+					"raw": "{{baseUrl}}/user",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"user"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Logout",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{token}}"
+					}
+				],
+				"url": {
+					"raw": "{{baseUrl}}/logout",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"logout"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Sources",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/sources",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"sources"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Categories",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/categories",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"categories"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Authors",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/authors",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"authors"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Search Articles",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/articles/search?q=technology&source=guardian&date_from=2025-01-01&date_to=2025-12-31&per_page=20",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"articles",
+						"search"
+					],
+					"query": [
+						{
+							"key": "q",
+							"value": "technology"
+						},
+						{
+							"key": "source",
+							"value": "guardian"
+						},
+						{
+							"key": "category",
+							"value": "tech",
+							"disabled": true
+						},
+						{
+							"key": "author",
+							"value": "John Doe",
+							"disabled": true
+						},
+						{
+							"key": "date_from",
+							"value": "2025-01-01"
+						},
+						{
+							"key": "date_to",
+							"value": "2025-12-31"
+						},
+						{
+							"key": "per_page",
+							"value": "20"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Show Article",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/articles/{{articleId}}",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"articles",
+						"{{articleId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Preferences",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{token}}"
+					}
+				],
+				"url": {
+					"raw": "{{baseUrl}}/user/preferences",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"user",
+						"preferences"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update Preferences",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{token}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"preferred_sources\": [\"guardian\", \"nytimes\"],\n  \"preferred_categories\": [\"tech\", \"world\"],\n  \"preferred_authors\": [\"Jane Smith\"]\n}"
+				},
+				"url": {
+					"raw": "{{baseUrl}}/user/preferences",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"user",
+						"preferences"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Personalized Feed",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{token}}"
+					}
+				],
+				"url": {
+					"raw": "{{baseUrl}}/user/feed?per_page=10",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"user",
+						"feed"
+					],
+					"query": [
+						{
+							"key": "per_page",
+							"value": "10"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "http://localhost:8000/api"
+		},
+		{
+			"key": "token",
+			"value": ""
+		},
+		{
+			"key": "articleId",
+			"value": "1"
+		}
+	]
+}
